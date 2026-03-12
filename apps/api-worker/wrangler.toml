@@ -1,0 +1,35 @@
+name = "ai-builder-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-15"
+compatibility_flags = ["nodejs_compat"]
+
+[env.development]
+vars = { ENVIRONMENT = "development" }
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+# D1 Database - REPLACE WITH YOUR DATABASE_ID
+[[d1_databases]]
+binding = "DB"
+database_name = "ai-builder-db"
+database_id = "YOUR_DATABASE_ID"
+
+# R2 Storage
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "ai-builder-files"
+
+# KV Cache
+[[kv_namespaces]]
+binding = "KV"
+id = "YOUR_KV_ID"
+
+# Durable Objects
+[[durable_objects.bindings]]
+name = "AI_ORCHESTRATOR"
+class_name = "AIOrchestrator"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["AIOrchestrator"]
