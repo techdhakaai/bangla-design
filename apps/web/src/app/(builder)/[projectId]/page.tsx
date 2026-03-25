@@ -13,6 +13,27 @@ import { Send, Loader2, FileCode, Play, MessageSquare, Sparkles } from "lucide-r
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8787";
 
+// Helper function to determine Monaco language from file path
+const getEditorLanguage = (filePath: string): string => {
+  const ext = filePath.split('.').pop()?.toLowerCase();
+  switch (ext) {
+    case 'css':
+      return 'css';
+    case 'html':
+      return 'html';
+    case 'json':
+      return 'json';
+    case 'js':
+      return 'javascript';
+    case 'jsx':
+      return 'javascript';
+    case 'ts':
+    case 'tsx':
+    default:
+      return 'typescript';
+  }
+};
+
 interface StreamMessage {
   type: "status" | "complete" | "error";
   message?: string;
@@ -59,16 +80,24 @@ export default function BuilderPage() {
       const decoder = new TextDecoder();
 
       if (reader) {
+        let buffer = '';
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
           
-          const chunk = decoder.decode(value);
-          const lines = chunk.split("\n").filter(Boolean);
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() || ''; // Keep incomplete line in buffer
           
-          for (const line of lines) {
+          for (const rawLine of lines) {
+            const line = rawLine.trim();
+            if (!line) continue;
+            
+            // Handle both SSE format (data: {...}) and raw JSON
+            const jsonStr = line.startsWith('data: ') ? line.slice(6) : line;
+            
             try {
-              const data: StreamMessage = JSON.parse(line);
+              const data: StreamMessage = JSON.parse(jsonStr);
               if (data.type === "status" && data.message) {
                 setStreamMessages(prev => [...prev, data.message!]);
               } else if (data.type === "complete" && data.files) {
@@ -206,7 +235,7 @@ export default function BuilderPage() {
               {files[activeFile] ? (
                 <Editor
                   height="100%"
-                  language="typescript"
+                  language={getEditorLanguage(activeFile)}
                   theme="vs-dark"
                   value={files[activeFile]}
                   onChange={(value) => updateFile(activeFile, value)}
