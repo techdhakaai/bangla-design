@@ -1,0 +1,17 @@
+# Exclude api-worker (deployed separately to Cloudflare)
+apps/api-worker
+
+# Documentation
+*.md
+!README.md
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+
+# Plans
+v0_plans

@@ -3,12 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "build": "cd apps/web && pnpm build",
+    "dev": "cd apps/web && pnpm dev",
     "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
-    "db:migrate": "cd apps/api-worker && wrangler d1 migrations apply ai-builder-db",
-    "deploy": "turbo run deploy"
+    "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
     "turbo": "^1.11.0",

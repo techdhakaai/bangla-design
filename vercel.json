@@ -1,11 +1,9 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "buildCommand": "pnpm --filter web build",
-  "devCommand": "pnpm --filter web dev",
-  "installCommand": "pnpm install",
-  "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
-  "regions": ["bom1"],
+  "installCommand": "pnpm install",
+  "buildCommand": "cd apps/web && pnpm build",
   "headers": [
     {
       "source": "/(.*)",
