@@ -3,15 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "turbo run build --filter=web",
-    "dev": "turbo run dev --filter=web",
+    "build": "cd apps/web && pnpm build",
+    "dev": "cd apps/web && pnpm dev",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck"
-  },
-  "dependencies": {
-    "next": "14.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "turbo": "^1.11.0",
