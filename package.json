@@ -3,12 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "build": "turbo run build --filter=web",
+    "dev": "turbo run dev --filter=web",
     "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
-    "db:migrate": "cd apps/api-worker && wrangler d1 migrations apply ai-builder-db",
-    "deploy": "turbo run deploy"
+    "typecheck": "turbo run typecheck"
+  },
+  "dependencies": {
+    "next": "14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "turbo": "^1.11.0",
